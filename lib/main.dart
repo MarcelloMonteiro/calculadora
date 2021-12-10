@@ -15,7 +15,7 @@ class CalcApp extends StatelessWidget {
         title: 'Calculadora',
         home: Scaffold(
           backgroundColor: Color(0xFF283637),
-          body: Center(child: CalcButton('1')),
+          body: Center(child: CalcButton(text: '1')),
         ));
   }
 }
