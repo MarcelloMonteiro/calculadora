@@ -3,6 +3,8 @@ import './widgets/CalcButton.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:math_expressions/math_expressions.dart';
+
 void main() {
   runApp(CalcApp());
 }
@@ -21,6 +23,31 @@ class CalcAppState extends State<CalcApp> {
   void numClick(String text) {
     setState(() {
       _expression += text;
+    });
+  }
+
+  void AllClean(String text) {
+    setState(() {
+      _history = '';
+      _expression = '';
+    });
+  }
+
+  void Clean(String text) {
+    setState(() {
+      _expression = '';
+    });
+  }
+
+  void evaluate(String text) {
+    Parser p = Parser();
+    Expression exp = p.parse(_expression);
+    ContextModel cm = ContextModel();
+    double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+    setState(() {
+      _history = _expression;
+      _expression = eval.toString();
     });
   }
 
@@ -61,12 +88,12 @@ class CalcAppState extends State<CalcApp> {
                       text: 'AC',
                       fillColor: 0xFF6C807F,
                       textSizer: 20,
-                      callback: numClick,
+                      callback: AllClean,
                     ),
                     CalcButton(
                       text: 'C',
                       fillColor: 0xFF6C807F,
-                      callback: numClick,
+                      callback: Clean,
                     ),
                     CalcButton(
                       text: '%',
@@ -183,7 +210,7 @@ class CalcAppState extends State<CalcApp> {
                       text: '=',
                       fillColor: 0xFFFFFFFF,
                       textColor: 0xFF65BDAC,
-                      callback: numClick,
+                      callback: evaluate,
                     ),
                   ],
                 ),
